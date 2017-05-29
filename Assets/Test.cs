@@ -19,7 +19,7 @@ public class Test : MonoBehaviour
 			MessagePack.Resolvers.PrimitiveObjectResolver.Instance
 		);
 
-        Test01();
+		Test01();
 		// InvalidCastException: Cannot cast from source type to destination type.
 		// MessagePack.Resolvers.GeneratedResolver+FormatterCache`1[SampleEnum[,]]..cctor() (at Assets/Generated.cs:34)
 
