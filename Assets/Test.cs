@@ -8,7 +8,10 @@ public class Test : MonoBehaviour
 	void Start()
 	{
 		Test01();
+		// Success
+
 		Test02();
+		// Success
 
 		MessagePack.Resolvers.CompositeResolver.RegisterAndSetAsDefault(
 			MessagePack.Resolvers.GeneratedResolver.Instance,
@@ -16,8 +19,12 @@ public class Test : MonoBehaviour
 			MessagePack.Resolvers.PrimitiveObjectResolver.Instance
 		);
 
-		Test01();
+        Test01();
+		// InvalidCastException: Cannot cast from source type to destination type.
+		// MessagePack.Resolvers.GeneratedResolver+FormatterCache`1[SampleEnum[,]]..cctor() (at Assets/Generated.cs:34)
+
 		Test02();
+		// FormatterNotRegisteredException: GenericTest`1[[System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]] is not registered in this resolver. resolver:CompositeResolver
 	}
 
 	private void Test01()
