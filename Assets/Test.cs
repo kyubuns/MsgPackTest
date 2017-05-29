@@ -36,7 +36,7 @@ public class Test : MonoBehaviour
 
 	private void Test02()
 	{
-		var data = new GenericTest<int> { Value = 5 };
+		var data = new GenericSampleClass { Value = new GenericTest<int> { Value = 5 } };
 		var msg = MessagePackSerializer.Serialize(data);
 		UnityEngine.Debug.Log(msg);
 	}

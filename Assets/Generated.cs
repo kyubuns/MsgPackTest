@@ -43,11 +43,12 @@ namespace MessagePack.Resolvers
 
         static GeneratedResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(3)
+            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(4)
             {
                 {typeof(global::SampleEnum[,]), 0 },
                 {typeof(global::SampleEnum), 1 },
                 {typeof(global::SampleClass), 2 },
+                {typeof(global::GenericSampleClass), 3 },
             };
         }
 
@@ -61,6 +62,7 @@ namespace MessagePack.Resolvers
                 case 0: return new global::MessagePack.Formatters.ArrayFormatter<global::SampleEnum>();
                 case 1: return new MessagePack.Formatters.SampleEnumFormatter();
                 case 2: return new MessagePack.Formatters.SampleClassFormatter();
+                case 3: return new MessagePack.Formatters.GenericSampleClassFormatter();
                 default: return null;
             }
         }
@@ -164,6 +166,61 @@ namespace MessagePack.Formatters
             readSize = offset - startOffset;
 
             var ____result = new global::SampleClass();
+            ____result.Value = __Value__;
+            return ____result;
+        }
+    }
+
+
+    public sealed class GenericSampleClassFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::GenericSampleClass>
+    {
+
+        public int Serialize(ref byte[] bytes, int offset, global::GenericSampleClass value, global::MessagePack.IFormatterResolver formatterResolver)
+        {
+            if (value == null)
+            {
+                return global::MessagePack.MessagePackBinary.WriteNil(ref bytes, offset);
+            }
+            
+            var startOffset = offset;
+            offset += global::MessagePack.MessagePackBinary.WriteFixedArrayHeaderUnsafe(ref bytes, offset, 1);
+            offset += formatterResolver.GetFormatterWithVerify<global::GenericTest<int>>().Serialize(ref bytes, offset, value.Value, formatterResolver);
+            return offset - startOffset;
+        }
+
+        public global::GenericSampleClass Deserialize(byte[] bytes, int offset, global::MessagePack.IFormatterResolver formatterResolver, out int readSize)
+        {
+            if (global::MessagePack.MessagePackBinary.IsNil(bytes, offset))
+            {
+                readSize = 1;
+                return null;
+            }
+
+            var startOffset = offset;
+            var length = global::MessagePack.MessagePackBinary.ReadArrayHeader(bytes, offset, out readSize);
+            offset += readSize;
+
+            var __Value__ = default(global::GenericTest<int>);
+
+            for (int i = 0; i < length; i++)
+            {
+                var key = i;
+
+                switch (key)
+                {
+                    case 0:
+                        __Value__ = formatterResolver.GetFormatterWithVerify<global::GenericTest<int>>().Deserialize(bytes, offset, formatterResolver, out readSize);
+                        break;
+                    default:
+                        readSize = global::MessagePack.MessagePackBinary.ReadNextBlock(bytes, offset);
+                        break;
+                }
+                offset += readSize;
+            }
+
+            readSize = offset - startOffset;
+
+            var ____result = new global::GenericSampleClass();
             ____result.Value = __Value__;
             return ____result;
         }

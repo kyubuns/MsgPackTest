@@ -15,6 +15,13 @@ public enum SampleEnum
 }
 
 [MessagePackObject]
+public class GenericSampleClass
+{
+	[Key(0)]
+	public GenericTest<int> Value { get; set; }
+}
+
+[MessagePackObject]
 public class GenericTest<T>
 {
 	[Key(0)]
